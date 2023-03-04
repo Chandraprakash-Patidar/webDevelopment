@@ -45,11 +45,18 @@
         e.preventDefault();
 
         // get input value
-        var newUser=document.getElementById('name').value;
+       var newUser=document.getElementById('name').value;
         var newEmail=document.getElementById('email').value;
-        localStorage.setItem('name',newUser)
-        localStorage.setItem('email',newEmail)
-        
+        var newUser=
+        {
+          name : newUser,
+          email : newEmail
+        };
+        var newUser_sri =JSON.stringify(newUser)
+       localStorage.setItem("newUser", newUser_sri);
+       console.log(localStorage)
+        // localStorage.setItem('name',newUser)
+        // localStorage.setItem('email',newEmail)
        }
     </script>
 
