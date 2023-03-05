@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>JS For Beginners</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <header>
@@ -18,48 +18,65 @@
         <div class="msg"></div>
         <div>
           <label for="name">Name:</label>
-          <input type="text" id="name">
+          <input type="text" id="name" />
         </div>
         <div>
           <label for="email">Email:</label>
-          <input type="text" id="email">
+          <input type="text" id="email" />
         </div>
-        <input class="btn" type="submit" value="Submit">
+        <div>
+          <label for="phone_number">Phone Number:</label>
+          <input type="tel" id="number" />
+        </div>
+        <input class="btn" type="submit" value="Submit" />
+
+        <ul id="user-list"></ul>
       </form>
-
-      <ul id="users"></ul>
-
-       <ul class="items">
-        <li class="item">Item 1</li>
-        <li class="item">Item 2</li>
-        <li class="item">Item 3</li>
-      </ul> 
     </section>
     <script>
       var form = document.getElementById('my-form')
-      //form submit event
-      form.addEventListener('submit',addUser)
-       //add user
-       function addUser(e)
-       {
-        e.preventDefault();
+            //form submit event
+            form.addEventListener('submit',addUser)
 
-        // get input value
-       var newUser=document.getElementById('name').value;
-        var newEmail=document.getElementById('email').value;
-        var newUser=
-        {
-          name : newUser,
-          email : newEmail
-        };
-        var newUser_sri =JSON.stringify(newUser)
-       localStorage.setItem("newUser", newUser_sri);
-       console.log(localStorage)
-        // localStorage.setItem('name',newUser)
-        // localStorage.setItem('email',newEmail)
-       }
+            // var existingUser=[]
+             //add user
+             function addUser(e)
+             {
+              e.preventDefault();
+
+              // get input value
+             var newUser=document.getElementById('name').value;
+              var newEmail=document.getElementById('email').value;
+              var newNumber=document.getElementById('number').value;
+
+                  // create new element
+
+                var li =document.createElement('li')
+                li.style.listStyleType = 'disc';
+
+                 // add id
+                li.id ='item';
+                // add text node with input value
+                li.appendChild(document.createTextNode(newUser))
+                li.appendChild(document.createTextNode(newEmail))
+                li.appendChild(document.createTextNode(newNumber))
+             //get element by id
+                var userList= document.getElementById('user-list')
+                // push list in ul
+                userList.appendChild(li);
+
+              var newUser =
+              {
+                name : newUser,
+                email : newEmail,
+                number : newNumber
+              };
+               var newUser_sri =(newEmail,JSON.stringify(newUser))
+                 localStorage.setItem(newEmail, newUser_sri);
+                 console.log(localStorage)
+            }
     </script>
 
-   
+    
   </body>
 </html>
