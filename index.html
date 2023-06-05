@@ -5,7 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>JS For Beginners</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <title>Save Data In Server</title>
 </head>
 
 <body>
@@ -25,6 +26,30 @@
     var form = document.getElementById('my-form')
     form.addEventListener('submit', addUser)
 
+      // Retrieve stored data from cloud API when page loads
+      window.addEventListener('load', function () {
+      axios.get("https://crudcrud.com/api/067ce64db14442009462470e826b375e/userdetail")
+        .then((res) => {
+          var userList = document.getElementById('user-list');
+          res.data.forEach((user) => {
+            addUserToList(user);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+
+     // Add user to the list
+     function addUserToList(user) {
+      var li = document.createElement('li');
+      li.style.listStyleType = 'disc';
+      li.appendChild(document.createTextNode(user.name + '  '))
+      li.appendChild(document.createTextNode(user.email + '  '))
+      li.appendChild(document.createTextNode(user.number + '  '))
+      var userList = document.getElementById('user-list');
+      userList.appendChild(li);
+    }
     //add user
     function addUser(e) {
       e.preventDefault();
@@ -68,15 +93,23 @@
         edit.focus();
       });
       li.appendChild(editBtn)
-      var newUser =
+      var newUserObj =
       {
         name: newUser,
         email: newEmail,
         number: newNumber
       };
-      var newUser_sri = (newEmail, JSON.stringify(newUser))
-      localStorage.setItem(newEmail, newUser_sri);
-      console.log(localStorage)
+      axios.post("https://crudcrud.com/api/067ce64db14442009462470e826b375e/userdetail", newUserObj)
+            .then((res)=>{
+              console.log(res)
+            })
+            .catch((err)=>{
+              console.log(err)
+            })
+         
+      // var newUser_sri = (newEmail, JSON.stringify(newUser))
+      // localStorage.setItem(newEmail, newUser_sri);
+      // console.log(localStorage)
     }
   </script>
 </body>
