@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <title>Save Data In Server</title>
+</head>
+
+<body>
+  <form id="my-form">
+    <label for="name">Name:</label>
+    <input type="text" id="name" />
+    <label for="email">Email:</label>
+    <input type="text" id="email" />
+    <label for="phone_number">Phone Number:</label>
+    <input type="tel" id="number" />
+    <input class="btn" type="submit" value="Submit" />
+    <ul id="user-list"></ul>
+  </form>
+  <script>
+    var form = document.getElementById('my-form');
+    form.addEventListener('submit', addUser);
+
+    // Retrieve stored data from cloud API when page loads
+    window.addEventListener("DOMContentLoaded", () => {
+      axios.get("https://crudcrud.com/api/067ce64db14442009462470e826b375e/userdetail")
+        .then((res) => {
+          console.log(res);
+          res.data.forEach(function (user) {
+            showNewUserOnScreen(user);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+
+    //add user
+    function addUser(e) {
+      e.preventDefault();
+      // get input value
+      var newUser = document.getElementById('name').value;
+      var newEmail = document.getElementById('email').value;
+      var newNumber = document.getElementById('number').value;
+
+      var newUserObj = {
+        name: newUser,
+        email: newEmail,
+        number: newNumber
+      };
+
+      axios.post("https://crudcrud.com/api/067ce64db14442009462470e826b375e/userdetail", newUserObj)
+        .then((res) => {
+          console.log(res);
+          showNewUserOnScreen(newUserObj);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    function showNewUserOnScreen(user) {
+      var li = document.createElement('li');
+      li.style.listStyleType = 'disc';
+
+      var userData = document.createTextNode(user.name + ' ' + user.email + ' ' + user.number + ' ');
+      li.appendChild(userData);
+        //create delete button
+      var deleteBtn = createButton('Delete');
+      deleteBtn.addEventListener('click', function () {
+        localStorage.removeItem(user.email);
+        li.remove();
+      });
+      li.appendChild(deleteBtn);
+     //create edit button
+      var editBtn = createButton('Edit');
+      editBtn.addEventListener('click', function () {
+        localStorage.removeItem(user.email);
+        li.remove();
+        var edit = document.getElementById('email');
+        edit.style.border = '2px solid black';
+        edit.focus();
+      });
+      li.appendChild(editBtn);
+
+      var userList = document.getElementById('user-list');
+      userList.appendChild(li);
+    }
+
+    function createButton(text) {
+      var button = document.createElement('input');
+      button.type = 'button';
+      button.value = text;
+      return button;
+    }
+  </script>
+</body>
+
+</html>
